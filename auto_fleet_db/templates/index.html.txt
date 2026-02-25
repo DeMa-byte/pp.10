@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Система учета автотранспорта</h1>
+
+<div class="stats">
+    <div class="stat-card">
+        <h3>Всего автомобилей</h3>
+        <p class="stat-number">{{ total_vehicles }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Всего ремонтов</h3>
+        <p class="stat-number">{{ total_repairs }}</p>
+    </div>
+</div>
+
+<h2>Последние автомобили</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Марка</th>
+            <th>Модель</th>
+            <th>Госномер</th>
+            <th>Год</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vehicle in vehicles[:5] %}
+        <tr>
+            <td>{{ vehicle.brand }}</td>
+            <td>{{ vehicle.model }}</td>
+            <td>{{ vehicle.license_plate }}</td>
+            <td>{{ vehicle.year or '-' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

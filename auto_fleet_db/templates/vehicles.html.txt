@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Управление автомобилями</h1>
+
+<div class="form-container">
+    <h3>Добавить автомобиль</h3>
+    <form action="/vehicles/add" method="POST">
+        <div class="form-group">
+            <label>Марка:</label>
+            <input type="text" name="brand" required>
+        </div>
+        <div class="form-group">
+            <label>Модель:</label>
+            <input type="text" name="model" required>
+        </div>
+        <div class="form-group">
+            <label>Госномер:</label>
+            <input type="text" name="license_plate" required>
+        </div>
+        <div class="form-group">
+            <label>Год выпуска:</label>
+            <input type="number" name="year">
+        </div>
+        <button type="submit" class="btn btn-success">Добавить</button>
+    </form>
+</div>
+
+<h2>Список автомобилей</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Марка</th>
+            <th>Модель</th>
+            <th>Госномер</th>
+            <th>Год</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for vehicle in vehicles %}
+        <tr>
+            <td>{{ vehicle.id }}</td>
+            <td>{{ vehicle.brand }}</td>
+            <td>{{ vehicle.model }}</td>
+            <td>{{ vehicle.license_plate }}</td>
+            <td>{{ vehicle.year or '-' }}</td>
+            <td>
+                <a href="/vehicles/delete/{{ vehicle.id }}" 
+                   class="btn btn-danger"
+                   onclick="return confirm('Удалить автомобиль?')">Удалить</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

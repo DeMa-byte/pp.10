@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Учет ремонтов</h1>
+
+<div class="form-container">
+    <h3>Добавить запись о ремонте</h3>
+    <form action="/repairs/add" method="POST">
+        <div class="form-group">
+            <label>Автомобиль:</label>
+            <select name="vehicle_id" required>
+                {% for vehicle in vehicles %}
+                <option value="{{ vehicle.id }}">{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.license_plate }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Дата ремонта:</label>
+            <input type="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label>Тип ремонта:</label>
+            <input type="text" name="repair_type" required>
+        </div>
+        <div class="form-group">
+            <label>Пробег при ремонте (км):</label>
+            <input type="number" name="mileage_at_repair">
+        </div>
+        <div class="form-group">
+            <label>Стоимость (₽):</label>
+            <input type="number" step="0.01" name="cost">
+        </div>
+        <div class="form-group">
+            <label>Описание:</label>
+            <textarea name="description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Добавить</button>
+    </form>
+</div>
+
+<h2>История ремонтов</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Автомобиль</th>
+            <th>Тип ремонта</th>
+            <th>Пробег</th>
+            <th>Стоимость</th>
+            <th>Описание</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for repair in repair_records %}
+        <tr>
+            <td>{{ repair.date.strftime('%d.%m.%Y') }}</td>
+            <td>{{ repair.vehicle.brand }} {{ repair.vehicle.model }}</td>
+            <td>{{ repair.repair_type }}</td>
+            <td>{{ repair.mileage_at_repair or '-' }} км</td>
+            <td>{{ repair.cost or '-' }} ₽</td>
+            <td>{{ repair.description or '-' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

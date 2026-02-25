@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Учет пробега</h1>
+
+<div class="form-container">
+    <h3>Добавить запись о пробеге</h3>
+    <form action="/mileage/add" method="POST">
+        <div class="form-group">
+            <label>Автомобиль:</label>
+            <select name="vehicle_id" required>
+                {% for vehicle in vehicles %}
+                <option value="{{ vehicle.id }}">{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.license_plate }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Дата:</label>
+            <input type="date" name="date" required>
+        </div>
+        <div class="form-group">
+            <label>Пробег (км):</label>
+            <input type="number" name="mileage" required>
+        </div>
+        <div class="form-group">
+            <label>Примечания:</label>
+            <textarea name="notes"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Добавить</button>
+    </form>
+</div>
+
+<h2>История пробега</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Автомобиль</th>
+            <th>Пробег (км)</th>
+            <th>Примечания</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in mileage_records %}
+        <tr>
+            <td>{{ record.date.strftime('%d.%m.%Y') }}</td>
+            <td>{{ record.vehicle.brand }} {{ record.vehicle.model }} ({{ record.vehicle.license_plate }})</td>
+            <td>{{ record.mileage }}</td>
+            <td>{{ record.notes or '-' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
